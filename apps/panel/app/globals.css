@@ -1,51 +1,144 @@
 @import "tailwindcss";
 
-@theme {
-  /* Teal-based design system */
-  --color-primary-50: #f0fdfa;
-  --color-primary-100: #ccfbf1;
-  --color-primary-200: #99f6e4;
-  --color-primary-300: #5eead4;
-  --color-primary-400: #2dd4bf;
-  --color-primary-500: #14b8a6;
-  --color-primary-600: #0d9488;
-  --color-primary-700: #0f766e;
-  --color-primary-800: #115e59;
-  --color-primary-900: #134e4a;
-  --color-primary-950: #042f2e;
+/* Tailwind class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* Semantic aliases */
+/* =========================================================
+   Design Tokens (using Tailwind’s teal palette)
+   ========================================================= */
+@theme {
+  /* ---------- Primary (Tailwind CSS teal) ---------- */
+  --color-primary-50: theme(colors.teal.50);
+  --color-primary-100: theme(colors.teal.100);
+  --color-primary-200: theme(colors.teal.200);
+  --color-primary-300: theme(colors.teal.300);
+  --color-primary-400: theme(colors.teal.400);
+  --color-primary-500: theme(colors.teal.500);
+  --color-primary-600: theme(colors.teal.600);
+  --color-primary-700: theme(colors.teal.700);
+  --color-primary-800: theme(colors.teal.800);
+  --color-primary-900: theme(colors.teal.900);
+
+  /* Brand semantic variables */
   --color-primary: var(--color-primary-600);
   --color-primary-hover: var(--color-primary-700);
-  --color-primary-muted: var(--color-primary-100);
-  --color-primary-foreground: #ffffff;
+  --color-primary-muted: var(--color-primary-200);
+  --color-primary-foreground: theme(colors.white);
 
-  --color-background: #ffffff;
-  --color-foreground: var(--color-primary-950);
-  --color-muted: var(--color-primary-100);
-  --color-muted-foreground: var(--color-primary-700);
+  /* Utility colors */
+  --color-destructive: theme(colors.red.600);
+  --color-destructive-hover: theme(colors.red.700);
+  --color-destructive-foreground: theme(colors.white);
+
   --color-accent: var(--color-primary-500);
-  --color-accent-foreground: #ffffff;
-  --color-border: var(--color-primary-200);
-  --color-ring: var(--color-primary-500);
-  --color-destructive: #dc2626;
-  --color-destructive-foreground: #ffffff;
+  --color-accent-hover: var(--color-primary-600);
+  --color-accent-foreground: theme(colors.white);
+
+  /* Background & text */
+  --color-background: theme(colors.white);
+  --color-foreground: theme(colors.gray.900);
+  --color-muted: theme(colors.gray.100);
+  --color-muted-foreground: theme(colors.gray.600);
+
+  /* Borders & inputs */
+  --color-border: theme(colors.gray.200);
+  --color-input: theme(colors.gray.200);
+
+  /* Ring */
+  --color-ring: var(--color-primary-400);
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --color-ring-offset: theme(colors.white);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Radius */
+  --radius-sm: theme(borderRadius.sm);
+  --radius-md: theme(borderRadius.md);
+  --radius-lg: theme(borderRadius.lg);
+  --radius-full: theme(borderRadius.full);
 }
 
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-primary: var(--color-primary-400);
-    --color-primary-hover: var(--color-primary-300);
-    --color-primary-muted: var(--color-primary-900);
-    --color-primary-foreground: var(--color-primary-950);
+/* =========================================================
+   Dark Mode Overrides (class-based)
+   ========================================================= */
+html.dark {
+  --color-background: theme(colors.gray.900);
+  --color-foreground: theme(colors.gray.50);
 
-    --color-background: var(--color-primary-950);
-    --color-foreground: var(--color-primary-50);
-    --color-muted: var(--color-primary-900);
-    --color-muted-foreground: var(--color-primary-300);
-    --color-accent: var(--color-primary-400);
-    --color-accent-foreground: var(--color-primary-950);
-    --color-border: var(--color-primary-800);
-    --color-ring: var(--color-primary-400);
+  --color-muted: theme(colors.gray.800);
+  --color-muted-foreground: theme(colors.gray.400);
+
+  --color-border: theme(colors.gray.700);
+  --color-input: theme(colors.gray.700);
+
+  --color-ring-offset: var(--color-background);
+}
+
+/* =========================================================
+   Base styles
+   ========================================================= */
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    text-rendering: geometricPrecision;
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+
+  /* Unified focus styling */
+  :where(a, button, input, textarea, select, [role="button"]) {
+    outline: none;
+  }
+  :where(a, button, input, textarea, select, [role="button"]):focus-visible {
+    box-shadow:
+      0 0 0 var(--ring-offset) var(--color-ring-offset),
+      0 0 0 calc(var(--ring-offset) + var(--ring-width)) var(--color-ring);
+  }
+}
+
+/* =========================================================
+   Helpful utility helpers
+   ========================================================= */
+@layer utilities {
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-primary-hover:hover {
+    background-color: var(--color-primary-hover);
+  }
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .text-muted {
+    color: var(--color-muted-foreground);
+  }
+  .bg-muted {
+    background-color: var(--color-muted);
+  }
+
+  .border-input {
+    border-color: var(--color-input);
+  }
+  .shadow-custom {
+    box-shadow: var(--shadow-md);
+  }
+
+  .rounded-base {
+    border-radius: var(--radius-md);
   }
 }

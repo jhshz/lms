@@ -82,11 +82,15 @@ const LoginPage = (): React.ReactElement => {
 
   const mode = watch("mode");
   const phone = watch("phone");
+  const isPhoneComplete = /^09\d{9}$/.test(phone ?? "");
 
   const otpSecondsLeft =
-    otpExpiresAt === null ? 0 : Math.max(0, Math.ceil((otpExpiresAt - now) / 1000));
+    otpExpiresAt === null
+      ? 0
+      : Math.max(0, Math.ceil((otpExpiresAt - now) / 1000));
   const otpExpired = otpSent && otpExpiresAt !== null && otpSecondsLeft === 0;
-  const canRequestOtpAgain = !phone || isSubmitting || (otpSent && !otpExpired);
+  const canRequestOtpAgain =
+    !isPhoneComplete || isSubmitting || (otpSent && !otpExpired);
 
   useEffect(() => {
     if (otpExpiresAt === null || otpSecondsLeft <= 0) return;
@@ -116,7 +120,10 @@ const LoginPage = (): React.ReactElement => {
   const setMode = (m: LoginMode) => setValue("mode", m);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4" dir="rtl">
+    <div
+      className="min-h-screen flex items-center justify-center bg-slate-100 p-4"
+      dir="rtl"
+    >
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-slate-800 mb-2">
           ورود به پنل
@@ -153,7 +160,10 @@ const LoginPage = (): React.ReactElement => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-slate-700 mb-1.5"
+            >
               شماره موبایل
             </label>
             <input
@@ -162,18 +172,25 @@ const LoginPage = (): React.ReactElement => {
               dir="ltr"
               placeholder="۰۹۱۲۳۴۵۶۷۸۹"
               className={`w-full px-4 py-3 rounded-xl border outline-none transition text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-200 ${
-                errors.phone ? "border-red-500 focus:border-red-500" : "border-slate-200 focus:border-slate-400"
+                errors.phone
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-slate-200 focus:border-slate-400"
               }`}
               {...register("phone")}
             />
             {errors.phone && (
-              <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {errors.phone.message}
+              </p>
             )}
           </div>
 
           {mode === "password" ? (
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-1.5"
+              >
                 رمز عبور
               </label>
               <div className="relative">
@@ -182,7 +199,9 @@ const LoginPage = (): React.ReactElement => {
                   type={showPassword ? "text" : "password"}
                   placeholder="رمز عبور خود را وارد کنید"
                   className={`w-full px-4 py-3 pe-12 rounded-xl border outline-none transition text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-200 ${
-                    errors.password ? "border-red-500 focus:border-red-500" : "border-slate-200 focus:border-slate-400"
+                    errors.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-slate-200 focus:border-slate-400"
                   }`}
                   {...register("password")}
                 />
@@ -191,18 +210,29 @@ const LoginPage = (): React.ReactElement => {
                   onClick={() => setShowPassword((p) => !p)}
                   className="absolute inset-e-2 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
                   tabIndex={-1}
-                  aria-label={showPassword ? "مخفی کردن رمز عبور" : "نمایش رمز عبور"}
+                  aria-label={
+                    showPassword ? "مخفی کردن رمز عبور" : "نمایش رمز عبور"
+                  }
                 >
-                  {showPassword ? <HiEyeSlash className="w-5 h-5" /> : <HiEye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <HiEyeSlash className="w-5 h-5" />
+                  ) : (
+                    <HiEye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
             </div>
           ) : (
             <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label
+                htmlFor="otp"
+                className="block text-sm font-medium text-slate-700 mb-1.5"
+              >
                 کد یکبار مصرف
               </label>
               <div className="flex gap-2">
@@ -214,7 +244,9 @@ const LoginPage = (): React.ReactElement => {
                   dir="ltr"
                   placeholder="کد ۶ رقمی"
                   className={`flex-1 px-4 py-3 rounded-xl border outline-none transition text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-200 ${
-                    errors.otp ? "border-red-500 focus:border-red-500" : "border-slate-200 focus:border-slate-400"
+                    errors.otp
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-slate-200 focus:border-slate-400"
                   }`}
                   {...register("otp", {
                     onChange: (e) => {
@@ -227,7 +259,7 @@ const LoginPage = (): React.ReactElement => {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={canRequestOtpAgain}
-                  className="px-4 py-3 rounded-xl bg-primary-muted text-primary-700 font-medium text-sm whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-200 transition-colors"
+                  className="px-4 py-3 rounded-xl bg-primary text-white font-medium text-sm whitespace-nowrap disabled:bg-slate-700/50 disabled:cursor-not-allowed hover:bg-primary-hover transition-colors"
                 >
                   {otpExpired
                     ? "دریافت مجدد کد"
@@ -243,11 +275,14 @@ const LoginPage = (): React.ReactElement => {
               )}
               {otpExpired && (
                 <p className="mt-1 text-sm text-amber-600">
-                  کد منقضی شده است. برای دریافت کد جدید دکمه «دریافت مجدد کد» را بزنید.
+                  کد منقضی شده است. برای دریافت کد جدید دکمه «دریافت مجدد کد» را
+                  بزنید.
                 </p>
               )}
               {errors.otp && (
-                <p className="mt-1 text-sm text-red-500">{errors.otp.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.otp.message}
+                </p>
               )}
             </div>
           )}
@@ -255,7 +290,7 @@ const LoginPage = (): React.ReactElement => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary-hover disabled:opacity-60 transition-colors"
+            className="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover disabled:opacity-60 transition-colors"
           >
             {isSubmitting ? "در حال بررسی..." : "ورود"}
           </button>
