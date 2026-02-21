@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  /* Teal-based design system */
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+  --color-primary-950: #042f2e;
+
+  /* Semantic aliases */
+  --color-primary: var(--color-primary-600);
+  --color-primary-hover: var(--color-primary-700);
+  --color-primary-muted: var(--color-primary-100);
+  --color-primary-foreground: #ffffff;
+
+  --color-background: #ffffff;
+  --color-foreground: var(--color-primary-950);
+  --color-muted: var(--color-primary-100);
+  --color-muted-foreground: var(--color-primary-700);
+  --color-accent: var(--color-primary-500);
+  --color-accent-foreground: #ffffff;
+  --color-border: var(--color-primary-200);
+  --color-ring: var(--color-primary-500);
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-primary: var(--color-primary-400);
+    --color-primary-hover: var(--color-primary-300);
+    --color-primary-muted: var(--color-primary-900);
+    --color-primary-foreground: var(--color-primary-950);
+
+    --color-background: var(--color-primary-950);
+    --color-foreground: var(--color-primary-50);
+    --color-muted: var(--color-primary-900);
+    --color-muted-foreground: var(--color-primary-300);
+    --color-accent: var(--color-primary-400);
+    --color-accent-foreground: var(--color-primary-950);
+    --color-border: var(--color-primary-800);
+    --color-ring: var(--color-primary-400);
+  }
+}
